@@ -6,10 +6,18 @@ templ App() {
   <head>
       <meta charset="UTF-8">
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
-      <script src="https://unpkg.com/htmx.org@1.5.0"></script>
+      <script defer src="https://unpkg.com/htmx.org@2.0.2"></script>
   </head>
   <body>
-      <button hx-post="/button" hx-swap="outerHTML">Click me</button>
+      <form
+        class="w-full flex flex-col gap-4"
+        hx-encoding="multipart/form-data"
+        hx-post="/button"
+        hx-target="body"
+        hx-swap="outerHTML"
+      >
+        <button type="submit">Click me</button>
+      </form>
       @SetupListeners()
   </body>
   </html>
