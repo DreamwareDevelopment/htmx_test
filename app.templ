@@ -1,0 +1,40 @@
+package main
+
+templ App() {
+  <!DOCTYPE html>
+  <html lang="en">
+  <head>
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <script src="https://unpkg.com/htmx.org@1.5.0"></script>
+  </head>
+  <body>
+      <button hx-post="/button" hx-swap="outerHTML">Click me</button>
+      @SetupListeners()
+  </body>
+  </html>
+}
+
+script SetupListeners() {
+  document.body.addEventListener("htmx:beforeRequest", function(event) {
+    console.log("htmx:beforeRequest", event);
+    const button = document.querySelector("button")
+    button.disabled = true
+    button.textContent = "Loading..."
+  });
+
+  document.body.addEventListener("htmx:afterRequest", function(event) {
+    console.log("htmx:afterRequest", event);
+    const button = document.querySelector("button")
+    button.disabled = false
+    button.textContent = "Click me"
+  });
+
+  document.body.addEventListener("htmx:responseError", function(event) {
+    console.log("htmx:responseError", event);
+    const buttons = document.querySelector("button")
+    const button = document.querySelector("button")
+    button.disabled = false
+    button.textContent = "Click me"
+  });
+}
