@@ -26,7 +26,7 @@ func App() templ.Component {
 			templ_7745c5c3_Var1 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<!doctype html><html lang=\"en\"><head><meta charset=\"UTF-8\"><meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\"><script defer src=\"https://unpkg.com/htmx.org@2.0.2\" integrity=\"sha384-Y7hw+L/jvKeWIRRkqWYfPcvVxHzVzn5REgzbawhxAuQGwX1XWe70vji+VSeHOThJ\" crossorigin=\"anonymous\"></script><script defer src=\"https://unpkg.com/htmx-ext-multi-swap@2.0.0/multi-swap.js\"></script><script defer src=\"https://unpkg.com/htmx-ext-json-enc@2.0.1/json-enc.js\"></script></head><body><form class=\"w-full flex flex-col gap-4\" hx-encoding=\"multipart/form-data\" hx-post=\"/button\" hx-target=\"body\" hx-swap=\"outerHTML\"><button type=\"submit\">Click me</button></form>")
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<!doctype html><html lang=\"en\"><head><meta charset=\"UTF-8\"><meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\"><script defer src=\"https://unpkg.com/htmx.org@2.0.2\"></script><link rel=\"stylesheet\" href=\"/public/styles.css\"></head><body><button type=\"button\">Some other button</button> <button id=\"submitButton\" hx-post=\"/button\" hx-target=\"body\" hx-swap=\"outerHTML\" type=\"submit\">Click me</button>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -44,19 +44,27 @@ func App() templ.Component {
 
 func SetupListeners() templ.ComponentScript {
 	return templ.ComponentScript{
-		Name: `__templ_SetupListeners_68b9`,
-		Function: `function __templ_SetupListeners_68b9(){document.body.addEventListener("htmx:beforeRequest", function(event) {
+		Name: `__templ_SetupListeners_b828`,
+		Function: `function __templ_SetupListeners_b828(){const submitButton = document.querySelector("#submitButton")
+  submitButton.addEventListener("click", function(event) {
+    submitButton.classList.add("closing")
+  });
+  submitButton.addEventListener("animationend", function(event) {
+    submitButton.remove();
+  });
+  
+  document.body.addEventListener("htmx:beforeRequest", function(event) {
     console.log("htmx:beforeRequest", event);
-    const button = document.querySelector("button")
-    button.disabled = true
-    button.textContent = "Loading..."
+    const button = document.querySelector("button");
+    button.disabled = true;
+    button.textContent = "Loading...";
   });
 
   document.body.addEventListener("htmx:afterRequest", function(event) {
     console.log("htmx:afterRequest", event);
-    const button = document.querySelector("button")
-    button.disabled = false
-    button.textContent = "Click me"
+    const button = document.querySelector("button");
+    button.disabled = false;
+    button.textContent = "Click me";
   });
 
   document.body.addEventListener("htmx:responseError", function(event) {
@@ -67,7 +75,7 @@ func SetupListeners() templ.ComponentScript {
     button.textContent = "Click me"
   });
 }`,
-		Call:       templ.SafeScript(`__templ_SetupListeners_68b9`),
-		CallInline: templ.SafeScriptInline(`__templ_SetupListeners_68b9`),
+		Call:       templ.SafeScript(`__templ_SetupListeners_b828`),
+		CallInline: templ.SafeScriptInline(`__templ_SetupListeners_b828`),
 	}
 }
